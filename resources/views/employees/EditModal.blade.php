@@ -68,7 +68,7 @@
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>
-                    <button type="submit" form="preferredWorkingDaysEditForm{{ $employee->id }}" class="btn btn-warning">編集</button>
+                    <button type="submit" form="preferredWorkingDaysEditForm{{ $employee->id }}" class="btn btn-info">登録</button>
                     </form>
                 </div>
             </div>
@@ -97,7 +97,7 @@
                     </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>
-                            <button type="submit" form="preferredDaysOffEditForm{{ $employee->id }}" class="btn btn-warning">編集</button>
+                            <button type="submit" form="preferredDaysOffEditForm{{ $employee->id }}" class="btn btn-info">登録</button>
                         </div>
                     </form>
                 </div>
@@ -105,3 +105,35 @@
         </div>
     </div>
 @endforeach
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        let employeeIds = @json($employees->pluck('id'));
+
+        employeeIds.forEach(function (employeeId) {
+            // 出勤希望日のFlatpickr設定
+            flatpickr(`#preferred_working_days${employeeId}`, {
+                mode: 'multiple',
+                dateFormat: 'Y-m-d',
+                onChange: function (selectedDates, dateStr) {
+                    // 選択された日付を JSON 形式に変換する
+                    let jsonDates = selectedDates.map(date => date.toJSON());
+                    // JSON 形式の日付を input 要素に設定する
+                    document.querySelector(`#preferred_working_days${employeeId}`).value = JSON.stringify(jsonDates);
+                }
+            });
+
+            // 休み希望日のFlatpickr設定
+            flatpickr(`#preferred_days_off${employeeId}`, {
+                mode: 'multiple',
+                dateFormat: 'Y-m-d',
+                onChange: function (selectedDates, dateStr) {
+                    // 選択された日付を JSON 形式に変換する
+                    let jsonDates = selectedDates.map(date => date.toJSON());
+                    // JSON 形式の日付を input 要素に設定する
+                    document.querySelector(`#preferred_days_off${employeeId}`).value = JSON.stringify(jsonDates);
+                }
+            });
+        });
+    });
+</script>

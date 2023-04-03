@@ -13,8 +13,7 @@
             <th>最低出勤日数</th>
             <th>所属店舗</th>
             <th>優先店舗</th>
-            <th>編集</th>
-            <th>削除</th>
+            <th>操作</th>
         </tr>
     </thead>
     <tbody>
@@ -24,21 +23,11 @@
                 <td>{{ $employee->name }}</td>
                 <td>
                     {{ $employee->preferred_working_days }}
-                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#workingDaysEditModal{{ $employee->id }}">出勤希望日を編集する</button>
-                    <form id="preferredWorkingDaysDeleteForm{{ $employee->id }}" action="{{ route('employees.deletePreferredWorkingDays', ['employee' => $employee->id]) }}" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger">削除</button>
-                    </form>
+                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#workingDaysEditModal{{ $employee->id }}">登録</button>
                 </td>
                 <td>
                     {{ $employee->preferred_days_off }}
-                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#daysOffEditModal{{ $employee->id }}">休み希望日を編集する</button>
-                    <form id="preferredDaysOffDeleteForm{{ $employee->id }}" action="{{ route('employees.deletePreferredDaysOff', ['employee' => $employee->id]) }}" method="POST">
-                        @csrf
-                        @method('DELETE')
-                        <button type="submit" class="btn btn-danger">削除</button>
-                    </form>
+                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#daysOffEditModal{{ $employee->id }}">登録</button>
                 </td>
                 <td>{{ $employee->min_working_days }}</td>
                 <td>
@@ -51,8 +40,6 @@
                 <td>{{ $employee->preferred_store->name }}</td>
                 <td>
                     <button type="button" class="btn btn-warning" data-toggle="modal" data-target="#employeeEditModal{{ $employee->id }}">編集</button>
-                </td>
-                <td>
                     <form action="{{ route('employees.destroy', $employee->id) }}" method="POST">
                         @csrf
                         @method('DELETE')

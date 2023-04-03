@@ -30,9 +30,7 @@
         <!-- Flatpickr -->
         <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
-        <script>
-            // window.employees = {!! json_encode($employees) !!}; //消すとカレンダーが機能しなくなる
-        </script>
+    
     </head>
     <body>
         <div class="container">
