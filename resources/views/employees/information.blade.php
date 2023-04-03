@@ -2,6 +2,10 @@
 
 @section('content')
     <h1>従業員情報</h1>
+
+
+
+    
     <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#employeeCreateModal">従業員情報を登録する</button>
     <table class="table mt-4">
     <thead>
@@ -22,11 +26,15 @@
                 <td>{{ $employee->id }}</td>
                 <td>{{ $employee->name }}</td>
                 <td>
-                    {{ $employee->preferred_working_days }}
+                    {{ collect(json_decode($employee->preferred_working_days))->map(function ($date) {
+                        return \Carbon\Carbon::parse($date)->format('m/d');
+                    })->sort()->implode(', ') }}                
                     <button type="button" class="btn btn-info" data-toggle="modal" data-target="#workingDaysEditModal{{ $employee->id }}">登録</button>
                 </td>
                 <td>
-                    {{ $employee->preferred_days_off }}
+                    {{ collect(json_decode($employee->preferred_days_off))->map(function ($date) {
+                        return \Carbon\Carbon::parse($date)->format('m/d');
+                    })->sort()->implode(', ') }} 
                     <button type="button" class="btn btn-info" data-toggle="modal" data-target="#daysOffEditModal{{ $employee->id }}">登録</button>
                 </td>
                 <td>{{ $employee->min_working_days }}</td>
