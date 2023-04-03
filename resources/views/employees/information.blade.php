@@ -22,13 +22,23 @@
             <tr>
                 <td>{{ $employee->id }}</td>
                 <td>{{ $employee->name }}</td>
-                <td>{{ $employee->preferred_working_days }}
-                <button type="button" class="btn btn-info" data-toggle="modal" data-target="#workingDaysEditModal{{ $employee->id }}">出勤希望日を編集する</button>
-
+                <td>
+                    {{ $employee->preferred_working_days }}
+                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#workingDaysEditModal{{ $employee->id }}">出勤希望日を編集する</button>
+                    <form id="preferredWorkingDaysDeleteForm{{ $employee->id }}" action="{{ route('employees.deletePreferredWorkingDays', ['employee' => $employee->id]) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger">削除</button>
+                    </form>
                 </td>
-                <td>{{ $employee->preferred_days_off }}
-                <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#daysOffEditModal{{ $employee->id }}">休み希望日編集</button>
-
+                <td>
+                    {{ $employee->preferred_days_off }}
+                    <button type="button" class="btn btn-info" data-toggle="modal" data-target="#daysOffEditModal{{ $employee->id }}">休み希望日を編集する</button>
+                    <form id="preferredDaysOffDeleteForm{{ $employee->id }}" action="{{ route('employees.deletePreferredDaysOff', ['employee' => $employee->id]) }}" method="POST">
+                        @csrf
+                        @method('DELETE')
+                        <button type="submit" class="btn btn-danger">削除</button>
+                    </form>
                 </td>
                 <td>{{ $employee->min_working_days }}</td>
                 <td>

@@ -30,6 +30,8 @@ Route::middleware(['auth'])->group(function () {
     Route::delete('/employees/{id}', [EmployeeController::class, 'destroy'])->name('employees.destroy');
     Route::put('/employees/{employee}/update-preferred-days-off', [EmployeeController::class, 'updatePreferredDaysOff'])->name('employees.updatePreferredDaysOff');
     Route::put('/employees/{employee}/update-preferred-working-days', [EmployeeController::class, 'updatePreferredWorkingDays'])->name('employees.updatePreferredWorkingDays');
+    // Route::delete('/employees/{employee}/preferred-working-days', 'EmployeeController@deletePreferredWorkingDays')->name('employees.deletePreferredWorkingDays');
+    // Route::delete('/employees/{employee}/preferred-days-off', 'EmployeeController@deletePreferredDaysOff')->name('employees.deletePreferredDaysOff');
 
 
     

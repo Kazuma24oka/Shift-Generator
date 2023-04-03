@@ -31,10 +31,8 @@
         <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
         <script>
-            window.employees = {!! json_encode($employees) !!}; //消すとカレンダーが機能しなくなる
+            // window.employees = {!! json_encode($employees) !!}; //消すとカレンダーが機能しなくなる
         </script>
-        <script src="{{ asset('js/app.js') }}"></script>
-
     </head>
     <body>
         <div class="container">

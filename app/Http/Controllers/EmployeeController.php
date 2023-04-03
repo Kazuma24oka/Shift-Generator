@@ -107,6 +107,23 @@ class EmployeeController extends Controller
         return redirect()->route('employees.information')->with('success', '休み希望日が更新されました。');
     }
 
+    // public function deletePreferredWorkingDays(Employee $employee)
+    // {
+    //     $employee->preferred_working_days = null;
+    //     $employee->save();
+
+    //     return redirect()->back()->with('success', '従業員の出勤希望日が削除されました。');
+    // }
+
+    // public function deletePreferredDaysOff(Employee $employee)
+    // {
+    //     $employee->preferred_days_off = null;
+    //     $employee->save();
+
+    //     return redirect()->back()->with('success', '従業員の休日希望日が削除されました。');
+    // }
+
+
     public function destroy($id)
     {
         $employee = Employee::find($id);
