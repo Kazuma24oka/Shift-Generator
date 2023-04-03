@@ -21,12 +21,20 @@
 
         <!-- Add jQuery and Popper.js CDNs -->
         <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha384-KyZXEAg3QhqLMpG8r+Knujsl7/1L_dstPt3HV5HzF6Gvk/e3tmQ9.hwco3ZgqopFrb" crossorigin="anonymous"></script>
-        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz4fnFO9gybBud7tL5z1r5xcX2f1y3xgj+Zq66b5YHf8VqGzL3N50i8//fD" crossorigin="anonymous"></script>
         <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.6.2/js/bootstrap.min.js" integrity="sha384-GrTNg1Kqua/6bRTvEJ5Ee8mNzdxlH9t79pe3Pf3KVS0db0yroJm49N3lIg+jWFBz" crossorigin="anonymous"></script>
 
         <!-- jQuery UI -->
         <link rel="stylesheet" href="https://code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
         <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.min.js"></script>
+
+        <!-- Flatpickr -->
+        <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+        <script>
+            window.employees = {!! json_encode($employees) !!}; //消すとカレンダーが機能しなくなる
+        </script>
+        <script src="{{ asset('js/app.js') }}"></script>
+
     </head>
     <body>
         <div class="container">

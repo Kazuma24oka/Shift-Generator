@@ -63,7 +63,7 @@
                         @method('PUT')
                         <div class="form-group">
                             <label for="preferred_working_days">出勤希望日</label>
-                            <input type="text" name="preferred_working_days" id="preferred_working_days{{ $employee->id }}" class="form-control" >
+                            <input type="text" name="preferred_working_days" id="preferred_working_days{{ $employee->id }}" class="form-control" data-input>
                         </div>
                 </div>
                 <div class="modal-footer">
@@ -93,7 +93,7 @@
                     @method('PUT')
                     <div class="form-group">
                         <label for="preferred_days_off">休み希望日</label>
-                        <input type="text" name="preferred_days_off" id="preferred_days_off{{ $employee->id }}" class="form-control" >
+                        <input type="text" name="preferred_days_off" id="preferred_days_off{{ $employee->id }}" class="form-control" data-input>
                     </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>

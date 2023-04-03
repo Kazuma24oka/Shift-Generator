@@ -54,77 +54,35 @@ function flushJobs() {
 
 // ここから
 
+document.addEventListener('DOMContentLoaded', function () {
+  let employeeIds = window.employees.map(employee => employee.id);
 
-// $(document).ready(function() {
-//   // 出勤希望日を選択するモーダルを開く
-//   $('body').on('click', '[id^=workingDaysEditModal]', function() {
-//       var employeeId = $(this).attr('id').replace('workingDaysEditModal', '');
-//       var datepickerId = 'working_days_datepicker' + employeeId;
+  employeeIds.forEach(function (employeeId) {
+      // 出勤希望日のFlatpickr設定
+      flatpickr(`#preferred_working_days${employeeId}`, {
+          mode: 'multiple',
+          dateFormat: 'Y-m-d',
+          onChange: function (selectedDates, dateStr) {
+              // 選択された日付を JSON 形式に変換する
+              let jsonDates = selectedDates.map(date => date.toJSON());
+              // JSON 形式の日付を input 要素に設定する
+              document.querySelector(`#preferred_working_days${employeeId}`).value = JSON.stringify(jsonDates);
+          }
+      });
 
-//       // カレンダーを表示する
-//       $('#' + datepickerId).datepicker({
-//           multidate: true, // 複数選択可能にする
-//           format: 'yyyy-mm-dd', // 日付のフォーマットを指定する
-//           autoclose: true // 日付を選択したらカレンダーを閉じる
-//       });
-
-//       // カレンダーの選択された日付にスタイルを適用する
-//       $('#' + datepickerId).on('changeDate', function(e) {
-//           $('.selected-date').removeClass('selected-date');
-//           $(e.target).find('.active').addClass('selected-date');
-//       });
-
-//       // 日付をクリアするボタン
-//       $('#clear_working_days' + employeeId).click(function() {
-//           $('#' + datepickerId).datepicker('clearDates');
-//           $('#preferred_working_days' + employeeId).val('');
-//       });
-
-//       // 日付が選択されたらフォームに反映する
-//       $('#' + datepickerId).on('changeDate', function() {
-//         var selectedDates = $('#' + datepickerId).datepicker('getDates');
-//         $('#preferred_working_days' + employeeId).val(selectedDates.join(', '));
-//       });
-//   });
-
-//   // 休み希望日を選択するモーダルを開く
-//   $('body').on('click', '[id^=daysOffEditModal]', function() {
-//       var employeeId = $(this).attr('id').replace('daysOffEditModal', '');
-//       var datepickerId = 'days_off_datepicker' + employeeId;
-
-//       // カレンダーを表示する
-//       $('#' + datepickerId).datepicker({
-//           multidate: true, // 複数選択可能にする
-//           format: 'yyyy-mm-dd', // 日付のフォーマットを指定する
-//           autoclose: true // 日付を選択したらカレンダーを閉じる
-//       });
-
-//       // カレンダーの選択された日付にスタイルを適用する
-//       $('#' + datepickerId).on('changeDate', function(e) {
-//           $('.selected-date').removeClass('selected-date');
-//           $(e.target).find('.ui-state-active').addClass('selected-date');
-//       });
-
-//       // 日付をクリアするボタン
-//       $('#clear_days_off' + employeeId).click(function() {
-//           $('#' + datepickerId).datepicker('clearDates');
-//           $('#preferred_days_off' + employeeId).val('');
-//       });
-
-//       // 日付が選択されたらフォームに反映する
-// $('#' + datepickerId).on('changeDate', function() {
-//   var selectedDates = $('#' + datepickerId).datepicker('getDates');
-//   $('#preferred_days_off' + employeeId).val(selectedDates.join(', '));
-// });
-
-// // 選択された日付の背景色を変更する
-// $('#' + datepickerId + ' .selected-date .ui-state-default').addClass('bg-primary text-white');
-// });
-
-// // 以前選択された日付の背景色を削除する
-// $('#' + datepickerId + ' .ui-state-default').removeClass('bg-primary text-white');
-// });
-
+      // 休み希望日のFlatpickr設定
+      flatpickr(`#preferred_days_off${employeeId}`, {
+          mode: 'multiple',
+          dateFormat: 'Y-m-d',
+          onChange: function (selectedDates, dateStr) {
+              // 選択された日付を JSON 形式に変換する
+              let jsonDates = selectedDates.map(date => date.toJSON());
+              // JSON 形式の日付を input 要素に設定する
+              document.querySelector(`#preferred_days_off${employeeId}`).value = JSON.stringify(jsonDates);
+          }
+      });
+  });
+});
 
 
 // ここまで
