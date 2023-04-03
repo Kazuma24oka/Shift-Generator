@@ -9,6 +9,24 @@ use Illuminate\Support\Facades\Auth;
 
 class EmployeeController extends Controller
 {
+    const RULES = [
+        'name' => 'required',
+        'preferred_working_days' => 'nullable',
+        'preferred_days_off' => 'nullable',
+        'min_working_days' => 'required',
+        'store_id' => 'required',
+        'preferred_store_id' => 'nullable',
+        'incompatible_employee_id' => 'nullable',
+    ];
+
+    const MESSAGES = [
+        'name.required' => '従業員名は必須です。',
+        'min_working_days.required' => '最低出勤日数は必須です。',
+        'store_id.required' => '所属店舗は必須です。',
+    ];
+
+    const REDIRECT_TO_INFORMATION = 'employees.information';
+
     public function index()
     {
         $employees = Employee::all();
@@ -16,25 +34,17 @@ class EmployeeController extends Controller
         return view('employees.information', compact('employees', 'stores'));
     }
 
-public function create()
-{
-    $stores = Store::all();
-    $employee = new Employee();
-    return view('employees.create', compact('stores', 'employee'));
-}
+    public function create()
+    {
+        $stores = Store::all();
+        $employee = new Employee();
+        return view('employees.create', compact('stores', 'employee'));
+    }
 
     public function store(Request $request)
     {
-        $request->validate([
-            'name' => 'required',
-            'preferred_working_days' => 'nullable',
-            'preferred_days_off' => 'nullable',
-            'min_working_days' => 'required',
-            'store_id' => 'required',
-            'preferred_store_id' => 'nullable',
-            'incompatible_employee_id' => 'nullable',
-        ]);
-    
+        $request->validate(self::RULES, self::MESSAGES);
+
         Employee::create([
             'name' => $request->name,
             'preferred_working_days' => $request->preferred_working_days,
@@ -44,8 +54,8 @@ public function create()
             'preferred_store_id' => $request->preferred_store_id,
             'incompatible_employee_id' => $request->incompatible_employee_id,
         ]);
-    
-        return redirect()->route('employees.information')->with('success', '従業員情報が登録されました。');
+
+        return redirect()->route(self::REDIRECT_TO_INFORMATION)->with('success', '従業員情報が登録されました。');
     }
 
     public function edit($id)
@@ -54,28 +64,28 @@ public function create()
         $stores = Store::all();
         return view('employees.edit', compact('employee', 'stores'));
     }
-    
+
     public function update(Request $request, $id)
-    {
-        $request->validate([
-            'name' => 'required',
-            'min_working_days' => 'required',
-            'store_id' => 'required',
-            'preferred_store_id' => 'nullable',
-            'incompatible_employee_id' => 'nullable',
-        ]);
-    
-        $employee = Employee::find($id);
-        $employee->update([
-            'name' => $request->name,
-            'min_working_days' => $request->min_working_days,
-            'store_id' => $request->store_id,
-            'preferred_store_id' => $request->preferred_store_id,
-            'incompatible_employee_id' => $request->incompatible_employee_id,
-        ]);
-    
-        return redirect()->route('employees.information')->with('success', '従業員情報が更新されました。');
-    }
+{
+    $request->validate([
+        'name' => 'required',
+        'min_working_days' => 'required',
+        'store_id' => 'required',
+        'preferred_store_id' => 'nullable',
+        'incompatible_employee_id' => 'nullable',
+    ]);
+
+    $employee = Employee::find($id);
+    $employee->update([
+        'name' => $request->name,
+        'min_working_days' => $request->min_working_days,
+        'store_id' => $request->store_id,
+        'preferred_store_id' => $request->preferred_store_id,
+        'incompatible_employee_id' => $request->incompatible_employee_id,
+    ]);
+
+    return redirect()->route('employees.information')->with('success', '従業員情報が更新されました。');
+}
     
     public function updatePreferredWorkingDays(Request $request, $id)
     {

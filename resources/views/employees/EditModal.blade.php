@@ -63,15 +63,13 @@
                         @method('PUT')
                         <div class="form-group">
                             <label for="preferred_working_days">出勤希望日</label>
-                            <input type="text" name="preferred_working_days" id="preferred_working_days{{ $employee->id }}" class="form-control" readonly>
-                            <div id="working_days_datepicker{{ $employee->id }}"></div>
-                            <button id="clear_working_days{{ $employee->id }}" class="btn btn-light">出勤希望日をクリア</button>
+                            <input type="text" name="preferred_working_days" id="preferred_working_days{{ $employee->id }}" class="form-control" >
                         </div>
-                    </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>
                     <button type="submit" form="preferredWorkingDaysEditForm{{ $employee->id }}" class="btn btn-warning">編集</button>
+                    </form>
                 </div>
             </div>
         </div>
@@ -91,19 +89,17 @@
                 </div>
                 <div class="modal-body">
                     <form id="preferredDaysOffEditForm{{ $employee->id }}" action="{{ route('employees.updatePreferredDaysOff', ['employee' => $employee->id]) }}" method="POST">
-                        @csrf
-                        @method('PUT')
-                        <div class="form-group">
-                            <label for="preferred_days_off">休み希望日</label>
-                            <input type="text" name="preferred_days_off" id="preferred_days_off{{ $employee->id }}" class="form-control" readonly>
-                            <div id="days_off_datepicker{{ $employee->id }}"></div>
-                            <button id="clear_days_off{{ $employee->id }}" class="btn btn-light">休み希望日をクリア</button>
+                    @csrf
+                    @method('PUT')
+                    <div class="form-group">
+                        <label for="preferred_days_off">休み希望日</label>
+                        <input type="text" name="preferred_days_off" id="preferred_days_off{{ $employee->id }}" class="form-control" >
+                    </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>
+                            <button type="submit" form="preferredDaysOffEditForm{{ $employee->id }}" class="btn btn-warning">編集</button>
                         </div>
                     </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-dismiss="modal">閉じる</button>
-                    <button type="submit" form="preferredDaysOffEditForm{{ $employee->id }}" class="btn btn-warning">編集</button>
                 </div>
             </div>
         </div>

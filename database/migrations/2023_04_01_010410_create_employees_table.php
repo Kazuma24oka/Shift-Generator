@@ -11,8 +11,8 @@ class CreateEmployeesTable extends Migration
         Schema::create('employees', function (Blueprint $table) {
             $table->id();
             $table->string('name');
-            $table->string('preferred_working_days')->nullable();
-            $table->string('preferred_days_off')->nullable();
+            $table->json('preferred_working_days')->nullable();
+            $table->json('preferred_days_off')->nullable();
             $table->integer('min_working_days');
             $table->unsignedBigInteger('store_id');
             $table->unsignedBigInteger('preferred_store_id');

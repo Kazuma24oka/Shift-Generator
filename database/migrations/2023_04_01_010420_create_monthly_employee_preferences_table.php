@@ -11,8 +11,8 @@ class CreateMonthlyEmployeePreferencesTable extends Migration
         Schema::create('monthly_employee_preferences', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('employee_id');
-            $table->string('preferred_working_days')->nullable();
-            $table->string('preferred_days_off')->nullable();
+            $table->json('preferred_working_days')->nullable();
+            $table->json('preferred_days_off')->nullable();
             $table->integer('month');
             $table->integer('year');
             $table->timestamps();
