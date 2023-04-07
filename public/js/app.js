@@ -54,7 +54,34 @@ function flushJobs() {
 
 // ここから
 
+document.addEventListener('DOMContentLoaded', function () {
+    var calendarEl = document.getElementById('calendar');
 
+    var calendar = new FullCalendar.Calendar(calendarEl, {
+        initialView: 'timeGridWeek',
+        height: 'auto',
+        headerToolbar: {
+            start: 'title',
+            center: '',
+            end: ''
+        },
+        slotDuration: '24:00',
+        slotLabelInterval: '1 day',
+        slotLabelFormat: {
+            month: 'numeric',
+            day: 'numeric'
+        },
+        events: @json($shifts->map(function ($shift) {
+            return [
+                'title' => $shift->employee->name,
+                'start' => $shift->date,
+                'end' => $shift->date
+            ];
+        }))
+    });
+
+    calendar.render();
+});
 
 
 // ここまで

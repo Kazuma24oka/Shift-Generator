@@ -1,4 +1,4 @@
-@extends('layouts.shiftapp')
+@extends('layouts.employeeapp')
 
 @section('content')
     <h1>従業員情報</h1>

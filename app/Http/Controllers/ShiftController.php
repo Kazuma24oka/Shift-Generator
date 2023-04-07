@@ -12,48 +12,11 @@ class ShiftController extends Controller
 {
     public function index()
     {
-        $shifts = Shift::all();
+        $shifts = Shift::with('employee')->get();
+
         return view('shifts.index', compact('shifts'));
     }
 
-    public function generate(Request $request)
-    {
-        // シフト表の自動生成処理を実装します。
-        // このサンプルでは、実際のアルゴリズムは省略されています。
-
-        // 1. ユーザーに関連するすべての従業員を取得する
-        $employees = Employee::where('user_id', Auth::id())->get();
-
-        // 2. 期間や従業員ごとの制約に基づいてシフト表を自動生成する
-        $startDate = new \DateTime(); // 今日の日付を取得
-        $endDate = (clone $startDate)->modify('+1 month'); // 1ヶ月後の日付を取得
-
-        while ($startDate <= $endDate) {
-            // 休日をスキップ
-            if ($startDate->format('N') == 6 || $startDate->format('N') == 7) {
-                $startDate->modify('+1 day');
-                continue;
-            }
-
-            foreach ($employees as $employee) {
-                // このサンプルでは、ランダムにシフトを割り当てます。
-                // 実際には、従業員の希望に基づいてシフトを割り当てるアルゴリズムを検討してください。
-                $startHour = rand(8, 16);
-                $endHour = $startHour + rand(4, 8);
-
-                Shift::create([
-                    'employee_id' => $employee->id,
-                    'date' => $startDate->format('Y-m-d'),
-                    'start_time' => sprintf('%02d:00:00', $startHour),
-                    'end_time' => sprintf('%02d:00:00', $endHour),
-                ]);
-            }
-
-            $startDate->modify('+1 day');
-        }
-
-        return redirect()->route('shifts.index')->with('success', 'シフト表が自動生成されました。');
-    }
     
     public function update(Request $request)
     {
@@ -114,5 +77,54 @@ class ShiftController extends Controller
         // ]);
 
         return redirect()->route('shifts.index')->with('success', 'シフト表が保存されました。');
+    }
+
+    public function generate(Request $request)
+    {
+        // 1. ユーザーに関連するすべての従業員を取得する
+        $employees = Employee::where('user_id', Auth::id())->get();
+
+        // 2. 期間や従業員ごとの制約に基づいてシフト表を自動生成する
+        $startDate = new \DateTime(); // 今日の日付を取得
+        $endDate = (clone $startDate)->modify('+1 month'); // 1ヶ月後の日付を取得
+
+        while ($startDate <= $endDate) {
+            // 休日をスキップ
+            if ($startDate->format('N') == 6 || $startDate->format('N') == 7) {
+                $startDate->modify('+1 day');
+                continue;
+            }
+
+            foreach ($employees as $employee) {
+                // 従業員の希望出勤日、希望休暇日、および最低出勤日数を考慮してシフトを割り当てるアルゴリズムを実装
+                $desiredWorkDays = json_decode($employee->desired_work_days, true);
+                $desiredVacationDays = json_decode($employee->desired_vacation_days, true);
+                $minimumWorkDays = $employee->minimum_work_days;
+
+                $currentDay = $startDate->format('Y-m-d');
+
+                if (in_array($currentDay, $desiredVacationDays)) {
+                    // この日は従業員の希望休暇日なのでシフトを割り当てない
+                    continue;
+                }
+
+                if (in_array($currentDay, $desiredWorkDays) || rand(0, 1) == 1) {
+                    // この日は従業員の希望出勤日またはランダムに決定した出勤日なのでシフトを割り当てる
+                    $startHour = rand(8, 16);
+                    $endHour = $startHour + rand(4, 8);
+
+                    Shift::create([
+                        'employee_id' => $employee->id,
+                        'date' => $currentDay,
+                        'start_time' => sprintf('%02d:00:00', $startHour),
+                        'end_time' => sprintf('%02d:00:00', $endHour),
+                    ]);
+                }
+            }
+
+            $startDate->modify('+1 day');
+        }
+
+        return redirect()->route('shifts.index')->with('success', 'シフト表が自動生成されました。');
     }
 }

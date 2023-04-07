@@ -92,6 +92,7 @@ public function updatePreferredWorkingDays(Request $request, $id)
 {
     $employee = Employee::find($id);
     $preferred_working_days = json_decode($request->preferred_working_days);
+    $preferred_working_days = $preferred_working_days ?? []; // 追加
     $converted_dates = array_map(function ($date) {
         return Carbon::createFromFormat('Y-m-d\TH:i:s.u\Z', $date, 'UTC')->setTimezone(config('app.timezone'))->format('Y-m-d H:i:s');
     }, $preferred_working_days);
@@ -106,9 +107,13 @@ public function updatePreferredDaysOff(Request $request, $id)
 {
     $employee = Employee::find($id);
     $preferred_days_off = json_decode($request->preferred_days_off);
-    $converted_dates = array_map(function ($date) {
-        return Carbon::createFromFormat('Y-m-d\TH:i:s.u\Z', $date, 'UTC')->setTimezone(config('app.timezone'))->format('Y-m-d H:i:s');
-    }, $preferred_days_off);
+    if ($preferred_days_off !== null) {
+        $converted_dates = array_map(function ($date) {
+            return Carbon::createFromFormat('Y-m-d\TH:i:s.u\Z', $date, 'UTC')->setTimezone(config('app.timezone'))->format('Y-m-d H:i:s');
+        }, $preferred_days_off);
+    } else {
+        $converted_dates = [];
+    }
     $employee->preferred_days_off = $converted_dates;
     $employee->save();
 
