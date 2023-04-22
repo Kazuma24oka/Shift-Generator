@@ -24,6 +24,10 @@
         "tailwindcss": "^3.1.0"
     },
     "dependencies": {
+        "@fullcalendar/daygrid": "^6.1.5",
+        "@fullcalendar/interaction": "^6.1.5",
+        "@fullcalendar/timegrid": "^6.1.5",
+        "@fullcalendar/vue": "^6.1.5",
         "bootstrap": "^4.6.2",
         "popper.js": "^1.16.1"
     }

@@ -2,32 +2,43 @@
 
 @section('content')
     <h1>シフト表</h1>
-    <!-- シフト表の表示処理を実装します。 -->
-    <!-- ここでは、サンプルとしてテーブル形式でシフト表を表示します。 -->
 
+    @php
+    $dates = \App\Models\Shift::dateList();
+@endphp
 
-    
-    <table class="table">
-        <thead>
-            <tr>
-                <th>日付</th>
-                <th>従業員名</th>
-                <th>開始時間</th>
-                <th>終了時間</th>
-            </tr>
-        </thead>
-        <tbody>
-            @foreach($shifts as $shift)
+    @foreach($shifts as $store => $employees)
+        <h2>{{ $store }}</h2>
+
+        <table id="shiftTable">
+
+            <thead>
                 <tr>
-                    <td>{{ $shift->date }}</td>
-                    <td>{{ $shift->employee->name }}</td>
-                    <td>{{ $shift->start_time }}</td>
-                    <td>{{ $shift->end_time }}</td>
+                    <th>従業員名</th>
+                    @foreach($dates as $date)
+                        <th>{{ $date }}</th>
+                    @endforeach
                 </tr>
-            @endforeach
-        </tbody>
-    </table>
-    <button class="btn btn-primary">シフト表を自動生成する</button>
+            </thead>
+            <tbody>
+                @foreach($employees as $employee => $shiftData)
+                    <tr>
+                        <td>{{ $employee }}</td>
+                        @foreach($dates as $date)
+                            <td>{{ $shiftData[$date] }}</td>
+                        @endforeach
+                    </tr>
+                @endforeach
+            </tbody>
+        </table>
+    @endforeach
+
     <a href="{{ route('employees.information') }}" class="btn btn-primary mr-2">従業員情報画面</a>
+
+    <!-- シフト表の自動生成処理をトリガーするボタンを追加 -->
+    <form action="{{ route('shifts.generate') }}" method="post" class="d-inline">
+        @csrf
+        <button type="submit" class="btn btn-success">シフト表を自動生成</button>
+    </form>
 
 @endsection

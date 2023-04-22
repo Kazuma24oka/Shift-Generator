@@ -6,6 +6,7 @@ use App\Models\Employee;
 use App\Models\Store;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Carbon\Carbon;
 
 class EmployeeController extends Controller
 {
@@ -45,15 +46,15 @@ class EmployeeController extends Controller
     {
         $request->validate(self::RULES, self::MESSAGES);
 
-        Employee::create([
-            'name' => $request->name,
-            'preferred_working_days' => $request->preferred_working_days,
-            'preferred_days_off' => $request->preferred_days_off,
-            'min_working_days' => $request->min_working_days,
-            'store_id' => $request->store_id,
-            'preferred_store_id' => $request->preferred_store_id,
-            'incompatible_employee_id' => $request->incompatible_employee_id,
-        ]);
+        $employee = new Employee();
+        $employee->name = $request->name;
+        $employee->preferred_working_days = json_decode($request->preferred_working_days);
+        $employee->preferred_days_off = json_decode($request->preferred_days_off);
+        $employee->min_working_days = $request->min_working_days;
+        $employee->store_id = $request->store_id;
+        $employee->preferred_store_id = $request->preferred_store_id;
+        $employee->incompatible_employee_id = $request->incompatible_employee_id;
+        $employee->save();
 
         return redirect()->route(self::REDIRECT_TO_INFORMATION)->with('success', '従業員情報が登録されました。');
     }
@@ -87,25 +88,37 @@ class EmployeeController extends Controller
     return redirect()->route('employees.information')->with('success', '従業員情報が更新されました。');
 }
     
-    public function updatePreferredWorkingDays(Request $request, $id)
-    {
-        $employee = Employee::find($id);
-        $employee->update([
-            'preferred_working_days' => $request->preferred_working_days,
-        ]);
-    
-        return redirect()->route('employees.information')->with('success', '出勤希望日が更新されました。');
+public function updatePreferredWorkingDays(Request $request, $id)
+{
+    $employee = Employee::find($id);
+    $preferred_working_days = json_decode($request->preferred_working_days);
+    $preferred_working_days = $preferred_working_days ?? []; // 追加
+    $converted_dates = array_map(function ($date) {
+        return Carbon::createFromFormat('Y-m-d\TH:i:s.u\Z', $date, 'UTC')->setTimezone(config('app.timezone'))->format('Y-m-d H:i:s');
+    }, $preferred_working_days);
+    $employee->update([
+        'preferred_working_days' => $converted_dates,
+    ]);
+
+    return redirect()->route('employees.information')->with('success', '出勤希望日が更新されました。');
+}
+
+public function updatePreferredDaysOff(Request $request, $id)
+{
+    $employee = Employee::find($id);
+    $preferred_days_off = json_decode($request->preferred_days_off);
+    if ($preferred_days_off !== null) {
+        $converted_dates = array_map(function ($date) {
+            return Carbon::createFromFormat('Y-m-d\TH:i:s.u\Z', $date, 'UTC')->setTimezone(config('app.timezone'))->format('Y-m-d H:i:s');
+        }, $preferred_days_off);
+    } else {
+        $converted_dates = [];
     }
-    
-    public function updatePreferredDaysOff(Request $request, $id)
-    {
-        $employee = Employee::find($id);
-        $employee->update([
-            'preferred_days_off' => $request->preferred_days_off,
-        ]);
-    
-        return redirect()->route('employees.information')->with('success', '休み希望日が更新されました。');
-    }
+    $employee->preferred_days_off = $converted_dates;
+    $employee->save();
+
+    return redirect()->route('employees.information')->with('success', '休み希望日が更新されました。');
+}
 
     public function destroy($id)
     {

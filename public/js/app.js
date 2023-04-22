@@ -54,35 +54,7 @@ function flushJobs() {
 
 // ここから
 
-document.addEventListener('DOMContentLoaded', function () {
-  let employeeIds = window.employees.map(employee => employee.id);
 
-  employeeIds.forEach(function (employeeId) {
-      // 出勤希望日のFlatpickr設定
-      flatpickr(`#preferred_working_days${employeeId}`, {
-          mode: 'multiple',
-          dateFormat: 'Y-m-d',
-          onChange: function (selectedDates, dateStr) {
-              // 選択された日付を JSON 形式に変換する
-              let jsonDates = selectedDates.map(date => date.toJSON());
-              // JSON 形式の日付を input 要素に設定する
-              document.querySelector(`#preferred_working_days${employeeId}`).value = JSON.stringify(jsonDates);
-          }
-      });
-
-      // 休み希望日のFlatpickr設定
-      flatpickr(`#preferred_days_off${employeeId}`, {
-          mode: 'multiple',
-          dateFormat: 'Y-m-d',
-          onChange: function (selectedDates, dateStr) {
-              // 選択された日付を JSON 形式に変換する
-              let jsonDates = selectedDates.map(date => date.toJSON());
-              // JSON 形式の日付を input 要素に設定する
-              document.querySelector(`#preferred_days_off${employeeId}`).value = JSON.stringify(jsonDates);
-          }
-      });
-  });
-});
 
 
 // ここまで

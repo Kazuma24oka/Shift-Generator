@@ -1,7 +1,6 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
 use App\Http\Controllers\ShiftController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\StoreController;
@@ -31,8 +30,6 @@ Route::middleware(['auth'])->group(function () {
     Route::put('/employees/{employee}/update-preferred-days-off', [EmployeeController::class, 'updatePreferredDaysOff'])->name('employees.updatePreferredDaysOff');
     Route::put('/employees/{employee}/update-preferred-working-days', [EmployeeController::class, 'updatePreferredWorkingDays'])->name('employees.updatePreferredWorkingDays');
 
-
-    
     // Store routes ...
     Route::get('/stores/create', [StoreController::class, 'createStore'])->name('stores.create');
     Route::post('/stores', [StoreController::class, 'storeStore'])->name('stores.store');

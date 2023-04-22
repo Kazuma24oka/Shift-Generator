@@ -17,4 +17,20 @@ class Shift extends Model
     {
         return $this->belongsTo(Employee::class);
     }
+
+    public static function dateList()
+    {
+        $startDate = new \DateTime('now');
+        $endDate = (clone $startDate)->modify('+1 month');
+        $dates = [];
+
+        while ($startDate <= $endDate) {
+            if ($startDate->format('N') <= 5) {
+                $dates[] = $startDate->format('Y-m-d');
+            }
+            $startDate->modify('+1 day');
+        }
+
+        return $dates;
+    }
 }
