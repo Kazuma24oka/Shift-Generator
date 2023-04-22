@@ -13,8 +13,10 @@ class ShiftController extends Controller
     public function index()
     {
         $shifts = Shift::with('employee')->get();
+        $shift = new Shift(); // Shiftのインスタンスを作成
+        $dates = $shift->getDates(); // インスタンスメソッドとしてgetDates()を呼び出す
 
-        return view('shifts.index', compact('shifts'));
+        return view('shifts.index', compact('shifts', 'dates'));
     }
 
     
